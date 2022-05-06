@@ -2,9 +2,8 @@ package View;
 
 
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
+
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -188,7 +187,7 @@ public class GUI {
 					if(controller.checkForNextRemainingResults()) {
 						nextButton.setVisible(true);
 					}
-//					
+				
 					
 				} catch (ParseException | IOException e1) {
 					// TODO Auto-generated catch block
@@ -201,7 +200,7 @@ public class GUI {
 				previousButton.setVisible(true);
 				disableResultBtns();
 				controller.setNextSearchResultBtnsText(resultBtns);
-//				
+				
 				if(!controller.checkForNextRemainingResults()) {
 					nextButton.setVisible(false);
 				}
@@ -213,7 +212,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				disableResultBtns();
 				controller.setPreviousSearchResultBtnsText(resultBtns);
-//				
+				
 				if(!controller.checkForPreviousRemainingResults()) {
 					previousButton.setVisible(false);
 				}
