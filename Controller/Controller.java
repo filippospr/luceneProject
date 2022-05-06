@@ -100,6 +100,9 @@ public class Controller {
 
 
 	private int calculateResultPages() {
+		if(searchResultDocs.length%10==0) {
+			return (int) Math.min(Math.ceil(searchResultDocs.length/10),10);
+		}
 		return (int) Math.min(Math.ceil(searchResultDocs.length/10)+1,10);
 		
 	}
