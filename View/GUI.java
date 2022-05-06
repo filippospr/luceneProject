@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-
+import org.apache.lucene.queryparser.classic.ParseException;
 
 import com.opencsv.exceptions.CsvException;
 
@@ -23,7 +23,7 @@ import Controller.Controller;
 
 
 public class GUI {
-    private 	 JFrame f;
+    private  JFrame f;
 	private  Controller controller;
 	
 	private  JLabel searchLabel;
@@ -162,16 +162,103 @@ public class GUI {
 	private  void initializeResultBtns() {
 		resultBtns=new ArrayList<JButton>();
 		for(int i=0;i<10;i++) {
-			JButton resultButton= new JButton("button");
-			
+			JButton resultButton= new JButton("");
+			resultButton.setVisible(false);
 			resultBtns.add(resultButton);
 			resultsPanel.add(resultButton);
 		}
 	}
+	private  void disableResultBtns() {
+		for(JButton resultBtn :resultBtns) {
+			resultBtn.setVisible(false);
+		}
+	}
+	
+
 	private  void addButtonActionListeners() {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(queryTextField.getText());
+				try {
+					disableResultBtns();
+					nextButton.setVisible(false);
+					controller.search(queryTextField.getText());
+					controller.setFirstSearchResultBtnsText(resultBtns);
+					
+					
+					if(controller.checkForNextRemainingResults()) {
+						nextButton.setVisible(true);
+					}
+//					
+					
+				} catch (ParseException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} 
+		});
+		nextButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				previousButton.setVisible(true);
+				disableResultBtns();
+				controller.setNextSearchResultBtnsText(resultBtns);
+//				
+				if(!controller.checkForNextRemainingResults()) {
+					nextButton.setVisible(false);
+				}
+				
+					
+			} 
+		});
+		previousButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				disableResultBtns();
+				controller.setPreviousSearchResultBtnsText(resultBtns);
+//				
+				if(!controller.checkForPreviousRemainingResults()) {
+					previousButton.setVisible(false);
+				}
+				if(controller.checkForNextRemainingResults()) {
+					nextButton.setVisible(true);
+				}
+				
+				
+					
+			} 
+			
+			
+		});
+		
+		titleRadioBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				previousButton.setVisible(false);
+				disableResultBtns();
+				
+				
+				controller.sortByTitle(resultBtns);;
+
+				if(controller.checkForNextRemainingResults()) {
+					nextButton.setVisible(true);
+				}
+				
+				
+					
+			} 
+		});
+		
+		releaseYearRadioBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				previousButton.setVisible(false);
+				disableResultBtns();
+				
+				
+				controller.sortByYear(resultBtns);;
+
+				if(controller.checkForNextRemainingResults()) {
+					nextButton.setVisible(true);
+				}
+				
+				
+					
 			} 
 		});
 	}

@@ -125,7 +125,8 @@ public class FileSearcher {
 	}
 	
 	private  void createsearchResultDocs(ScoreDoc[] hits) throws IOException {
-		   for(int i=0;i<hits.length;++i) {
+		searchResultDocs=new ArrayList<Document>();  
+		for(int i=0;i<hits.length;++i) {
 	            int docId = hits[i].doc;
 	            Document d = searcher.doc(docId);
 	            searchResultDocs.add(d);
@@ -171,7 +172,7 @@ public class FileSearcher {
 		 dir.close();
 		 dir2.close();
 	}
-//	
+
 	public static void main(String[] args) throws IOException, CsvException,ParseException{
 //		String indexPath="Indexes";
 //		

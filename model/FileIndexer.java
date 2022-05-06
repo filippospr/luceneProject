@@ -135,7 +135,7 @@ public class FileIndexer {
         return hits;
 	}
 	
-	
+
 //
 	public static void main(String[] args) throws IOException, CsvException,ParseException{
 //		String indexPath="Indexes";
