@@ -36,10 +36,4 @@ public class CheckSpelling
 			    System.out.println("\t" + suggestion);
 		}
     }
-    
-    public static void main(String[] args) throws IOException, Throwable
-    {
-    	CheckSpelling mySpellChecker = new CheckSpelling();
-    	mySpellChecker.checkdictionary("ponny");
-    }
 }
