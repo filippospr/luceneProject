@@ -32,7 +32,7 @@ public class CheckSpelling
 			//checker.setStringDistance(new LuceneLevenshteinDistance());
 			//checker.setStringDistance(new NGramDistance()); 
 			
-			String[] suggestions = mySpellingChecker.suggestSimilar(input_word, 5); //how many suggestions
+			String[] suggestions = mySpellingChecker.suggestSimilar(input_word, 10); //how many suggestions
 			System.out.println("By '" + input_word + "' did you mean:");
 			for(String suggestion : suggestions)
 			    System.out.println("\t" + suggestion);
