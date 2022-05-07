@@ -2,7 +2,6 @@ package model;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.index.IndexWriterConfig;
