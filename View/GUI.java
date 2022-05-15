@@ -34,9 +34,11 @@ public class GUI {
 	private  JButton previousButton;
 	private  JButton nextButton ;
 	private  ArrayList<JButton> resultBtns;
+	private  ArrayList<JButton> suggestionBtns;
+	
 	private  JRadioButton titleRadioBtn;
 	private  JRadioButton releaseYearRadioBtn;
-	
+	private  ButtonGroup group;
 	private  JPanel upperPanel;
 	private  JPanel searchPanel;
 	private  JPanel sortPanel;
@@ -128,7 +130,7 @@ public class GUI {
 		sortByLabel=new JLabel("Sort By:");
 		titleRadioBtn=new JRadioButton("title");
 		releaseYearRadioBtn= new JRadioButton("release year");
-		ButtonGroup group= new ButtonGroup();
+		group= new ButtonGroup();
 		group.add(titleRadioBtn);
 		group.add(releaseYearRadioBtn);
 	}
@@ -140,13 +142,57 @@ public class GUI {
 		correctSpellingPanel= new JPanel();
 		correctSpellingPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
 		initializeCorrectSpellingPanelComponents();
-		correctSpellingPanel.add(incorrectLabel);
+	
 
 	}
 	
 	private  void initializeCorrectSpellingPanelComponents() {
 		incorrectLabel= new JLabel("Did you mean :");
 		incorrectLabel.setVisible(false);
+		correctSpellingPanel.add(incorrectLabel);
+		suggestionBtns=new ArrayList<JButton>();
+		for(int i=0;i<5;i++) {
+			JButton suggestionBtn= new JButton("Text");
+			suggestionBtn.setVisible(false);
+			suggestionBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						disableResultBtns();
+						disableCorrectSpellingPanel();
+						dumpResultsAndPanel();
+						group.clearSelection();
+						nextButton.setVisible(false);
+						controller.search(suggestionBtn.getText());
+						
+						if(controller.noResultsGiven()) {
+							controller.setSuggestionBtnsText(suggestionBtns, suggestionBtn.getText());
+							enableCorrectSpellingPanel();
+							return;
+						}
+						controller.setFirstSearchResultBtnsText(resultBtns,f);
+						
+						
+						
+						
+						if(controller.checkForNextRemainingResults()) {
+							nextButton.setVisible(true);
+						}
+						
+					
+						
+					} catch (ParseException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} 
+			});
+			
+			
+			suggestionBtns.add(suggestionBtn);
+			correctSpellingPanel.add(suggestionBtn);
+			
+		}
+		
 	}
 		
 	
@@ -173,20 +219,34 @@ public class GUI {
 		}
 	}
 	
-
+	private void dumpResultbuttons() {
+		resultBtns=null;
+	}
 	private  void addButtonActionListeners() {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					disableResultBtns();
+					disableCorrectSpellingPanel();
+					dumpResultsAndPanel();
+					group.clearSelection();
 					nextButton.setVisible(false);
 					controller.search(queryTextField.getText());
-					controller.setFirstSearchResultBtnsText(resultBtns);
+					
+					if(controller.noResultsGiven()) {
+						controller.setSuggestionBtnsText(suggestionBtns, queryTextField.getText());
+						enableCorrectSpellingPanel();
+						return;
+					}
+					controller.setFirstSearchResultBtnsText(resultBtns,f);
+					
+					
 					
 					
 					if(controller.checkForNextRemainingResults()) {
 						nextButton.setVisible(true);
 					}
+					
 				
 					
 				} catch (ParseException | IOException e1) {
@@ -199,7 +259,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				previousButton.setVisible(true);
 				disableResultBtns();
-				controller.setNextSearchResultBtnsText(resultBtns);
+				dumpResultsAndPanel();
+				controller.setNextSearchResultBtnsText(resultBtns,f);
 				
 				if(!controller.checkForNextRemainingResults()) {
 					nextButton.setVisible(false);
@@ -211,7 +272,8 @@ public class GUI {
 		previousButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				disableResultBtns();
-				controller.setPreviousSearchResultBtnsText(resultBtns);
+				dumpResultsAndPanel();
+				controller.setPreviousSearchResultBtnsText(resultBtns,f);
 				
 				if(!controller.checkForPreviousRemainingResults()) {
 					previousButton.setVisible(false);
@@ -231,9 +293,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				previousButton.setVisible(false);
 				disableResultBtns();
-				
-				
-				controller.sortByTitle(resultBtns);;
+				dumpResultsAndPanel();
+				controller.sortByTitle(resultBtns,f);;
 
 				if(controller.checkForNextRemainingResults()) {
 					nextButton.setVisible(true);
@@ -248,9 +309,9 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				previousButton.setVisible(false);
 				disableResultBtns();
+				dumpResultsAndPanel();
 				
-				
-				controller.sortByYear(resultBtns);;
+				controller.sortByYear(resultBtns,f);;
 
 				if(controller.checkForNextRemainingResults()) {
 					nextButton.setVisible(true);
@@ -262,8 +323,30 @@ public class GUI {
 		});
 	}
 	
-
+	private void dumpResultsAndPanel() {
+		dumpResultbuttons();
+		f.remove(resultsPanel);
+		initializeResultsPanel();
+		f.add(resultsPanel);
+	}
 	
+	
+	private void disableCorrectSpellingPanel() {
+		incorrectLabel.setVisible(false);
+		for(JButton suggestionBtn :suggestionBtns) {
+			suggestionBtn.setVisible(false);
+		}
+	}
+	private void enableCorrectSpellingPanel() {
+		incorrectLabel.setVisible(true);
+		for(JButton suggestionBtn :suggestionBtns) {
+			suggestionBtn.setVisible(true);
+		}
+	}
+	
+	public JFrame getFrame() {
+		return f;
+	}
 
 
 	public static  void main(String[] args) throws IOException, CsvException{
