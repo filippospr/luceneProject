@@ -13,16 +13,15 @@ import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-public class QuerySpellChecker {
-	
-	public QuerySpellChecker() throws IOException {
+public class QuerySpellChecker 
+{
+	public QuerySpellChecker() throws IOException 
+	{
 		createSpellIndex();
-		
-		
 	}
 	
-	private  void createSpellIndex() throws IOException {
-		 
+	private  void createSpellIndex() throws IOException 
+	{
 		 String spellCheckDir = "SpellingIndex";
 		 String indexDir = "Index";
 		 String indexField = "title";
@@ -31,7 +30,8 @@ public class QuerySpellChecker {
 		 SpellChecker spell = new SpellChecker(dir);
 		 Directory dir2 = FSDirectory.open(Paths.get(indexDir));
 		 IndexReader r = DirectoryReader.open(dir2);
-		 try {
+		 try 
+		 {
 			 IndexWriterConfig config = new IndexWriterConfig(new KeywordAnalyzer());
 			 spell.indexDictionary(
 					 new LuceneDictionary(r, indexField),config, false);
@@ -42,7 +42,8 @@ public class QuerySpellChecker {
 		 dir2.close();
 	}
 	
-	public String[] suggestSearchQuery(String query) throws IOException {
+	public String[] suggestSearchQuery(String query) throws IOException 
+	{
 		 String spellCheckDir = "SpellingIndex";
 		 String wordToRespell = query;
 		 Directory dir = FSDirectory.open(Paths.get(spellCheckDir));
@@ -52,16 +53,6 @@ public class QuerySpellChecker {
 		 
 		 String[] suggestions = spell.suggestSimilar(wordToRespell, 5);
 		 
-//		 System.out.println(suggestions.length +" suggestions for '" +
-//		 wordToRespell + "':");
-//		 
-//		 for(String suggestion : suggestions){
-//		   System.out.println(" " + suggestion);
-//		 }
-//		 
 		 return suggestions;
-		
 	}
-	
-
 }
