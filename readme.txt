@@ -1,1 +1,1 @@
-Για να τρέξει το project είναι απαραίτητο πιο πρίν πρέπει μέσω του setting configure build path να προστεθούν στο project τα αρχεία jar απο το φάκελο jarFiles.
+Για να τρέξει το project είναι απαραίτητο πιο πρίν πρέπει μέσω του setting configure java build path να προστεθούν στο project τα αρχεία jar απο το φάκελο jarFiles στο classpath.
