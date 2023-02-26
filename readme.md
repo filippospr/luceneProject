@@ -1,1 +1,1 @@
-Για να τρέξει το project είναι απαραίτητο πιο πρίν πρέπει μέσω του setting configure java build path να προστεθούν στο project τα αρχεία jar απο το φάκελο jarFiles στο classpath.
+Search Engine using lucene library and movies from netflix as data corpus. This engine was created as a part of an exercise for the course Information Retrieval of University of Ioannina
